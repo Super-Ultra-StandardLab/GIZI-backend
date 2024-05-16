@@ -5,6 +5,7 @@ import { SubmitModule } from './submit/submit.module';
 
 @Module({
   imports: [
+    SubmitModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,

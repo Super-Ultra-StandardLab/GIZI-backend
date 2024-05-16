@@ -34,7 +34,7 @@ export class Submit {
 
   @Column({
     type: 'varchar',
-    length: 11,
+    length: 20,
   })
   phone: string;
 
