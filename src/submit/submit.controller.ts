@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpCode,
+} from '@nestjs/common';
 import { SubmitService } from './submit.service';
-import { CreateSubmitDto } from './dto/create-submit.dto';
-import { UpdateSubmitDto } from './dto/update-submit.dto';
+import { CreateSubmitDto } from './dto/request/create-submit.dto';
+import { Submit } from './entities/submit.entity';
 
 @Controller('submit')
 export class SubmitController {
   constructor(private readonly submitService: SubmitService) {}
 
   @Post()
-  create(@Body() createSubmitDto: CreateSubmitDto) {
+  @HttpCode(201)
+  create(@Body() createSubmitDto: CreateSubmitDto): Promise<Submit> {
     return this.submitService.create(createSubmitDto);
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Submit[]> {
     return this.submitService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.submitService.findOne(+id);
+  findOne(@Param('id') id: bigint) {
+    return this.submitService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubmitDto: UpdateSubmitDto) {
-    return this.submitService.update(+id, updateSubmitDto);
-  }
-
+  // guard 만들어야댐!!
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.submitService.remove(+id);
+  remove(@Param('id') id: bigint) {
+    return this.submitService.remove(id);
   }
 }

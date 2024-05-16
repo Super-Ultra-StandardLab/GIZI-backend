@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSubmitDto } from './dto/create-submit.dto';
-import { UpdateSubmitDto } from './dto/update-submit.dto';
+import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,23 +10,20 @@ export class SubmitService {
     @InjectRepository(Submit)
     private readonly SubmitRepository: Repository<Submit>,
   ) {}
+
   create(createSubmitDto: CreateSubmitDto) {
     return this.SubmitRepository.save(createSubmitDto);
   }
 
-  findAll() {
-    return `This action returns all submit`;
+  findAll(): Promise<Submit[]> {
+    return this.SubmitRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} submit`;
+  findOne(programId: bigint): Promise<Submit> {
+    return this.SubmitRepository.findOne({ where: { programId } });
   }
 
-  update(id: number, updateSubmitDto: UpdateSubmitDto) {
-    return `This action updates a #${id} submit`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} submit`;
+  remove(programId: bigint) {
+    return this.SubmitRepository.delete({ programId });
   }
 }
