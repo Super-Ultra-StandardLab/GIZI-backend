@@ -29,7 +29,7 @@ export class SubmitController {
 
   @Post()
   @HttpCode(201)
-  async create(@Body() createSubmitDto: CreateSubmitDto): Promise<Submit> {
+  async create(@Body() createSubmitDto: CreateSubmitDto) {
     return this.submitService.create(createSubmitDto);
   }
 

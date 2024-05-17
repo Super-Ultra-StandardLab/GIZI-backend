@@ -1,6 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-export type TimeType = 'morning' | 'afternoon' | 'allday';
+import { TimeType } from './enum/time-type';
 
 @Entity()
 export class Submit {
@@ -15,7 +14,7 @@ export class Submit {
     enum: ['morning', 'afternoon', 'allday'],
     default: 'allday',
   })
-  role: TimeType;
+  time: TimeType;
 
   @Column({ type: 'varchar', length: 20 })
   date: string;
@@ -45,7 +44,7 @@ export class Submit {
   participant: number;
 
   @Column()
-  grade: number;
+  grade: number; // 여러 학년이 동시에 올 경우는 어떻게 해야 할지
 
   @Column({ nullable: true, type: 'text' })
   question: string;

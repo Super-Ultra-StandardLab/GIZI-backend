@@ -1,19 +1,19 @@
 import {
   IsEmail,
+  IsEnum,
   IsInt,
-  IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
+import { TimeType } from '../../entities/enum/time-type';
 
 export class CreateSubmitDto {
   @IsString()
   programName: string;
 
-  //@IsEnum(TimeType) 왜 안되지..
-  @IsNotEmpty()
-  time: string;
+  @IsEnum(TimeType)
+  time: TimeType;
 
   @IsString()
   date: string;
