@@ -6,8 +6,6 @@ import {
   Param,
   Delete,
   HttpCode,
-  ValidationPipe,
-  UsePipes,
 } from '@nestjs/common';
 import { SubmitService } from './submit.service';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';

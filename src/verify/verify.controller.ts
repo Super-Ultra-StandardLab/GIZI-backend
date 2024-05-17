@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { VerifyService } from './verify.service';
 import { CreateVerifyDto } from './dto/request/create-verify.dto';
 import { VerifyResponseDto } from './dto/response/verify-response-dto';
