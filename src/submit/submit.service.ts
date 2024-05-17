@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,9 +13,24 @@ export class SubmitService {
     private readonly SubmitRepository: Repository<Submit>,
   ) {}
 
-  create(createSubmitDto: CreateSubmitDto) {
-    // 만약 신청 꽉 차서 못 하는 날짜일 경우에는 필터링해야 할 듯..?
-    return this.SubmitRepository.save(createSubmitDto);
+  async create(createSubmitDto: CreateSubmitDto) {
+    // 만약 신청 꽉 차서 못 하는 날짜일 경우에는 필터링
+    const checkDate = await this.SubmitRepository.find({
+      where: { date: createSubmitDto.date },
+    });
+
+    if (createSubmitDto.time === 'allday' && checkDate.length !== 0) {
+      throw new ConflictException('선택하신 시간에 이미 신청자가 존재합니다.');
+    }
+    checkDate.forEach((item) => {
+      if (item.time === createSubmitDto.time || item.time === 'allday') {
+        throw new ConflictException(
+          `선택하신 시간에 이미 신청자가 존재합니다.`,
+        );
+      }
+    });
+
+    return await this.SubmitRepository.save(createSubmitDto);
   }
 
   async findAll(): Promise<Submit[]> {
