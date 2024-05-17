@@ -1,9 +1,12 @@
+import { TimeType } from 'src/submit/entities/enum/time-type';
 import { Submit } from 'src/submit/entities/submit.entity';
 
 export class ResponseSubmitDto {
+  programId: bigint;
+
   programName: string;
 
-  time: string;
+  time: TimeType;
 
   date: string;
 
@@ -19,10 +22,12 @@ export class ResponseSubmitDto {
 
   grade: number;
 
-  question?: string;
+  question: string;
 
   static of(submit: Submit): ResponseSubmitDto {
     return {
+      programId: submit.programId,
+
       programName: submit.programName,
 
       time: submit.time,

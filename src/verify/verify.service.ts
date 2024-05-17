@@ -6,8 +6,6 @@ import { Repository } from 'typeorm';
 import { VerifyResponseDto } from './dto/response/verify-response-dto';
 import { VerifyRequestDto } from './dto/request/verify-request-dto';
 import { generateNumericToken } from './function/randomNumber';
-
-const verifyResponse = new VerifyResponseDto();
 @Injectable()
 export class VerifyService {
   constructor(
@@ -29,7 +27,7 @@ export class VerifyService {
       phoneNumber: createVerifyDto.phoneNumber,
       expiredAt,
     });
-    verifyResponse.result = true;
+    const verifyResponse = VerifyResponseDto.of(true);
 
     return verifyResponse;
   }
@@ -50,7 +48,7 @@ export class VerifyService {
     this.PhoneVerifyRepository.update(phoneVerification.id, {
       isVerified: true, // 인증 완료시키기
     });
-    verifyResponse.result = true;
+    const verifyResponse = VerifyResponseDto.of(true);
 
     return verifyResponse;
   }

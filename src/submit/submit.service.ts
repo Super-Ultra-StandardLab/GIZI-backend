@@ -3,6 +3,7 @@ import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 
 @Injectable()
 export class SubmitService {
@@ -20,8 +21,11 @@ export class SubmitService {
     return this.SubmitRepository.find();
   }
 
-  findOne(programId: bigint): Promise<Submit> {
-    return this.SubmitRepository.findOne({ where: { programId } });
+  async findOne(programId: bigint): Promise<ResponseSubmitDto> {
+    const responseSubmit = ResponseSubmitDto.of(
+      await this.SubmitRepository.findOne({ where: { programId } }),
+    );
+    return responseSubmit;
   }
 
   remove(programId: bigint) {

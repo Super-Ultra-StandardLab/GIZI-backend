@@ -10,6 +10,7 @@ import {
 import { SubmitService } from './submit.service';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
+import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 
 @Controller('submit')
 export class SubmitController {
@@ -23,8 +24,8 @@ export class SubmitController {
 
   // guard 추가하기
   @Get(':id')
-  findOne(@Param('id') id: bigint): Promise<Submit> {
-    return this.submitService.findOne(id);
+  async findOne(@Param('id') id: bigint): Promise<ResponseSubmitDto> {
+    return await this.submitService.findOne(id);
   }
 
   @Post()
