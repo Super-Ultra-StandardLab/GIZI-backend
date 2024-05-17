@@ -1,8 +1,8 @@
 import {
   IsEmail,
-  IsEmpty,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
@@ -24,7 +24,7 @@ export class CreateSubmitDto {
   @IsString()
   name: string;
 
-  @IsPhoneNumber()
+  @IsPhoneNumber('KR')
   phone: string;
 
   @IsString()
@@ -36,7 +36,7 @@ export class CreateSubmitDto {
   @IsInt()
   grade: number;
 
-  @IsEmpty()
+  @IsOptional()
   @IsString()
-  question: string;
+  question?: string;
 }

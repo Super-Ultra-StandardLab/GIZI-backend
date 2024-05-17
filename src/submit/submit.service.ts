@@ -12,6 +12,7 @@ export class SubmitService {
   ) {}
 
   create(createSubmitDto: CreateSubmitDto) {
+    // 만약 신청 꽉 차서 못 하는 날짜일 경우에는 필터링해야 할 듯..?
     return this.SubmitRepository.save(createSubmitDto);
   }
 

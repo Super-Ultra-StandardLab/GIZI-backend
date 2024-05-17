@@ -6,11 +6,14 @@ import {
   Param,
   Delete,
   HttpCode,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { SubmitService } from './submit.service';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 
+const createSubmitDto = new CreateSubmitDto();
 @Controller('submit')
 export class SubmitController {
   constructor(private readonly submitService: SubmitService) {}
@@ -27,8 +30,9 @@ export class SubmitController {
 
   @Post()
   @HttpCode(201)
-  create(@Body() createSubmitDto: CreateSubmitDto): Promise<Submit> {
-    return this.submitService.create(createSubmitDto); // 신청
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createSubmitDto: CreateSubmitDto): Promise<Submit> {
+    return this.submitService.create(createSubmitDto);
   }
 
   // guard 만들어야댐!!
