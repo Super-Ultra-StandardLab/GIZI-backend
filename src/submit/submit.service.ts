@@ -4,6 +4,7 @@ import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
+import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
 
 @Injectable()
 export class SubmitService {
@@ -17,15 +18,14 @@ export class SubmitService {
     return this.SubmitRepository.save(createSubmitDto);
   }
 
-  findAll(): Promise<Submit[]> {
-    return this.SubmitRepository.find();
+  async findAll(): Promise<Submit[]> {
+    return ResponseAllSubmitDto.of(await this.SubmitRepository.find());
   }
 
   async findOne(programId: bigint): Promise<ResponseSubmitDto> {
-    const responseSubmit = ResponseSubmitDto.of(
+    return ResponseSubmitDto.of(
       await this.SubmitRepository.findOne({ where: { programId } }),
     );
-    return responseSubmit;
   }
 
   remove(programId: bigint) {
