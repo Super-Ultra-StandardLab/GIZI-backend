@@ -33,8 +33,8 @@ export class CreateSubmitDto {
   @IsInt()
   participant: number;
 
-  @IsInt()
-  grade: number;
+  @IsString()
+  grade: string;
 
   @IsOptional()
   @IsString()

@@ -20,7 +20,7 @@ export class ResponseSubmitDto {
 
   participant: number;
 
-  grade: number;
+  grade: string;
 
   question: string;
 

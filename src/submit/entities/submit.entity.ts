@@ -44,7 +44,7 @@ export class Submit {
   participant: number;
 
   @Column()
-  grade: number; // 여러 학년이 동시에 올 경우는 어떻게 해야 할지
+  grade: string; // 여러 학년이 동시에 올 경우가 있을 수 있어 string으로 변경하여 1,2학년과 같이 직접 적을 수 있도록 하는 게 나을 듯
 
   @Column({ nullable: true, type: 'text' })
   question: string;
