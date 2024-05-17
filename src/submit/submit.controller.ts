@@ -15,12 +15,6 @@ import { Submit } from './entities/submit.entity';
 export class SubmitController {
   constructor(private readonly submitService: SubmitService) {}
 
-  @Post()
-  @HttpCode(201)
-  create(@Body() createSubmitDto: CreateSubmitDto): Promise<Submit> {
-    return this.submitService.create(createSubmitDto);
-  }
-
   @Get()
   findAll(): Promise<Submit[]> {
     return this.submitService.findAll();
@@ -29,6 +23,12 @@ export class SubmitController {
   @Get(':id')
   findOne(@Param('id') id: bigint): Promise<Submit> {
     return this.submitService.findOne(id);
+  }
+
+  @Post()
+  @HttpCode(201)
+  create(@Body() createSubmitDto: CreateSubmitDto): Promise<Submit> {
+    return this.submitService.create(createSubmitDto); // 신청
   }
 
   // guard 만들어야댐!!
