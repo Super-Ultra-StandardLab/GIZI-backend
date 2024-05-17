@@ -1,6 +1,6 @@
 import { IsPhoneNumber } from 'class-validator';
 
 export class CreateVerifyDto {
-  @IsPhoneNumber()
+  @IsPhoneNumber('KR')
   phoneNumber: string;
 }

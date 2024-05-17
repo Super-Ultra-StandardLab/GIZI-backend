@@ -15,7 +15,9 @@ export class VerifyService {
     private readonly PhoneVerifyRepository: Repository<PhoneVerify>,
   ) {}
 
-  async create(createVerifyDto: CreateVerifyDto): Promise<VerifyResponseDto> {
+  async createVerify(
+    createVerifyDto: CreateVerifyDto,
+  ): Promise<VerifyResponseDto> {
     const VERIFY_CODE_VALID_TIME = 5; // 인증 만료 시간
     const verifyCode = generateNumericToken(); // 랜덤 6자리 번호
 

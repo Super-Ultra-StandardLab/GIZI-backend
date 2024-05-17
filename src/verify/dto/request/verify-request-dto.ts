@@ -1,7 +1,7 @@
 import { IsPhoneNumber, IsString } from 'class-validator';
 
 export class VerifyRequestDto {
-  @IsPhoneNumber()
+  @IsPhoneNumber('KR')
   phoneNumber: string;
   @IsString()
   verifyCode: string;
