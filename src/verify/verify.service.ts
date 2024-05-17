@@ -5,18 +5,7 @@ import { PhoneVerify } from './entities/verify.entity';
 import { Repository } from 'typeorm';
 import { VerifyResponseDto } from './dto/response/verify-response-dto';
 import { VerifyRequestDto } from './dto/request/verify-request-dto';
-
-export function generateNumericToken(
-  length: number = 6,
-  alphabet: string = '1234567890',
-): string {
-  let id = '';
-  let i = length;
-  while (i--) {
-    id += alphabet[(Math.random() * alphabet.length) | 0];
-  }
-  return id;
-}
+import { generateNumericToken } from './function/randomNumber';
 
 @Injectable()
 export class VerifyService {
