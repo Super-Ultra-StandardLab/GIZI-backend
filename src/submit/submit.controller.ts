@@ -27,7 +27,7 @@ export class SubmitController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: bigint) {
+  findOne(@Param('id') id: bigint): Promise<Submit> {
     return this.submitService.findOne(id);
   }
 

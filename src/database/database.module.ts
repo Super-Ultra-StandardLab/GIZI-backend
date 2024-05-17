@@ -3,6 +3,7 @@ dotenv.config();
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Submit } from 'src/submit/entities/submit.entity';
+import { PhoneVerify } from 'src/verify/entities/verify.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -13,7 +14,7 @@ import { Submit } from 'src/submit/entities/submit.entity';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
       synchronize: true,
-      entities: [Submit],
+      entities: [Submit, PhoneVerify],
     }),
   ],
 })
