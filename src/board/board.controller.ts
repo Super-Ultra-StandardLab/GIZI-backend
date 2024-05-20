@@ -24,7 +24,7 @@ export class BoardController {
 
   // guard 필요
   @Get()
-  findAll() {
+  findAll(): Promise<Board[]> {
     return this.boardService.findAll();
   }
 

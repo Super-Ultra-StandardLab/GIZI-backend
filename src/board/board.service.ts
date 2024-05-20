@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getKoreaTime } from './function/getKoreaTime';
+import { ResponseAllBoardDto } from './dto/response/all-board-response-dto';
 
 @Injectable()
 export class BoardService {
@@ -19,8 +20,8 @@ export class BoardService {
     return this.BoardRepository.save(createBoardDto);
   }
 
-  findAll() {
-    return `This action returns all board`;
+  async findAll(): Promise<Board[]> {
+    return ResponseAllBoardDto.of(await this.BoardRepository.find());
   }
 
   findOne(id: number) {
