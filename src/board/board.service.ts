@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBoardDto } from './dto/create-board.dto';
-import { UpdateBoardDto } from './dto/update-board.dto';
+import { CreateBoardDto } from './dto/request/create-board.dto';
+import { UpdateBoardDto } from './dto/request/update-board.dto';
+import { Repository } from 'typeorm';
+import { Board } from './entities/board.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { getKoreaTime } from './function/getKoreaTime';
 
 @Injectable()
 export class BoardService {
-  create(createBoardDto: CreateBoardDto) {
-    return 'This action adds a new board';
+  constructor(
+    @InjectRepository(Board)
+    private readonly BoardRepository: Repository<Board>,
+  ) {}
+
+  create(createBoardDto: CreateBoardDto): Promise<Board> {
+    const koreaTime = getKoreaTime();
+    createBoardDto.createdAt = koreaTime; // 한국날짜
+    return this.BoardRepository.save(createBoardDto);
   }
 
   findAll() {
