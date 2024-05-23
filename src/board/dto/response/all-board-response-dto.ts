@@ -12,8 +12,6 @@ export class ResponseAllBoardDto {
 
   detail: string;
 
-  image: string;
-
   createdAt: string;
 
   static of(board: Board[]): ResponseAllBoardDto[] {
@@ -27,8 +25,6 @@ export class ResponseAllBoardDto {
       title: board.title,
 
       detail: board.detail,
-
-      image: board.image,
 
       createdAt: board.createdAt,
     }));

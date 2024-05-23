@@ -6,6 +6,7 @@ import { Board } from './entities/board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getKoreaTime } from './function/getKoreaTime';
 import { ResponseAllBoardDto } from './dto/response/all-board-response-dto';
+import { FindByTypeDto } from './dto/request/find-by-type-dto';
 
 @Injectable()
 export class BoardService {
@@ -24,15 +25,24 @@ export class BoardService {
     return ResponseAllBoardDto.of(await this.BoardRepository.find());
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  findOne(boardId: bigint) {
+    return this.BoardRepository.findOne({ where: { boardId } });
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
+  async findByType(findByTypeDto: FindByTypeDto): Promise<Board[]> {
+    return ResponseAllBoardDto.of(
+      await this.BoardRepository.find({
+        where: {
+          type: findByTypeDto.type,
+        },
+      }),
+    );
+  }
+  update(boardId: number, updateBoardDto: UpdateBoardDto) {
+    return this.BoardRepository.update(boardId, updateBoardDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} board`;
+    return this.BoardRepository.delete(id);
   }
 }
