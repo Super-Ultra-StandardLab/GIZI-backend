@@ -4,6 +4,7 @@ import { DatabaseModule } from './database/database.module';
 import { SubmitModule } from './submit/submit.module';
 import { VerifyModule } from './verify/verify.module';
 import { BoardModule } from './board/board.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BoardModule } from './board/board.module';
     SubmitModule,
     VerifyModule,
     BoardModule,
+    UploadModule,
   ],
   controllers: [],
   providers: [],
