@@ -6,7 +6,6 @@ import {
   IsPhoneNumber,
   IsString,
   Length,
-  length,
 } from 'class-validator';
 import { TimeType } from '../../entities/enum/time-type';
 
