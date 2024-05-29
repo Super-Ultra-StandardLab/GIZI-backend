@@ -8,6 +8,8 @@ import { VerifyRequestDto } from './dto/request/verify-request-dto';
 import { generateNumericToken } from './function/randomNumber';
 @Injectable()
 export class VerifyService {
+  static VERIFY_CODE_VALID_TIME = 5; // 인증 만료 시간
+
   constructor(
     @InjectRepository(PhoneVerify)
     private readonly PhoneVerifyRepository: Repository<PhoneVerify>,
@@ -16,11 +18,12 @@ export class VerifyService {
   async createVerify(
     createVerifyDto: CreateVerifyDto,
   ): Promise<VerifyResponseDto> {
-    const VERIFY_CODE_VALID_TIME = 5; // 인증 만료 시간
     const verifyCode = generateNumericToken(); // 랜덤 6자리 번호
 
     const expiredAt = new Date();
-    expiredAt.setMinutes(expiredAt.getMinutes() + VERIFY_CODE_VALID_TIME);
+    expiredAt.setMinutes(
+      expiredAt.getMinutes() + VerifyService.VERIFY_CODE_VALID_TIME,
+    );
 
     await this.PhoneVerifyRepository.save({
       verifyCode,
@@ -44,7 +47,9 @@ export class VerifyService {
         .orderBy({ createdAt: 'DESC' })
         .getOne();
 
-    if (!phoneVerification) throw new UnauthorizedException(); // 있는지 확인
+    if (!phoneVerification) {
+      return VerifyResponseDto.of(false);
+    } // 있는지 확인
     this.PhoneVerifyRepository.update(phoneVerification.id, {
       isVerified: true, // 인증 완료시키기
     });
