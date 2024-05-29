@@ -5,27 +5,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { UploadService } from './upload.service';
 
 @Controller('upload')
 export class UploadController {
+  constructor(private readonly uploadService: UploadService) {}
   @Post()
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './images',
-        filename(_, file, callback): void {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return callback(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  uploadImage(@UploadedFile() fileName: Express.Multer.File) {
-    return { image: '/image/' + fileName.filename };
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(@UploadedFile() fileName: Express.Multer.File) {
+    const image = await this.uploadService.getStorageOptions(fileName);
+
+    return { image };
   }
 }
