@@ -4,7 +4,6 @@ import { UpdateBoardDto } from './dto/request/update-board.dto';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getKoreaTime } from './function/getKoreaTime';
 import { ResponseAllBoardDto } from './dto/response/all-board-response-dto';
 import { FindByTypeDto } from './dto/request/find-by-type-dto';
 
@@ -16,13 +15,7 @@ export class BoardService {
   ) {}
 
   create(createBoardDto: CreateBoardDto): Promise<Board> {
-    const koreaTime = getKoreaTime();
-    createBoardDto.createdAt = koreaTime; // 한국날짜
     return this.BoardRepository.save(createBoardDto);
-  }
-
-  async findAll(): Promise<Board[]> {
-    return ResponseAllBoardDto.of(await this.BoardRepository.find());
   }
 
   findOne(boardId: bigint) {
@@ -30,7 +23,7 @@ export class BoardService {
   }
 
   async findByType(findByTypeDto: FindByTypeDto): Promise<Board[]> {
-    return ResponseAllBoardDto.of(
+    return ResponseAllBoardDto.listOf(
       await this.BoardRepository.find({
         where: {
           type: findByTypeDto.type,

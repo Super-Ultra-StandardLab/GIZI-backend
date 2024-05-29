@@ -15,8 +15,4 @@ export class CreateBoardDto {
   @IsOptional()
   @IsString()
   detail?: string;
-
-  @IsOptional()
-  @IsString()
-  createdAt?: string;
 }

@@ -18,15 +18,10 @@ import { FindByTypeDto } from './dto/request/find-by-type-dto';
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
-  // guard 필요
+  // TODO: guard 필요
   @Post()
   create(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
     return this.boardService.create(createBoardDto);
-  }
-
-  @Get()
-  findAll(): Promise<Board[]> {
-    return this.boardService.findAll();
   }
 
   @Get('/type')
@@ -39,13 +34,13 @@ export class BoardController {
     return this.boardService.findOne(id);
   }
 
-  // guard 필요
+  // TODO: guard 필요
   @Put(':id')
   update(@Param('id') id: number, @Body() updateBoardDto: UpdateBoardDto) {
     return this.boardService.update(id, updateBoardDto);
   }
 
-  // guard 필요
+  // TODO: guard 필요
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.boardService.remove(id);

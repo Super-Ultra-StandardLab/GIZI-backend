@@ -1,32 +1,27 @@
+import { Expose, plainToClass, plainToInstance } from 'class-transformer';
 import { Board } from 'src/board/entities/board.entity';
 import { BoardType } from 'src/board/entities/enum/boardType-type';
 
 export class ResponseAllBoardDto {
+  @Expose()
   boardId: bigint;
 
+  @Expose()
   type: BoardType;
 
+  @Expose()
   thumbnail: string;
 
+  @Expose()
   title: string;
 
+  @Expose()
   detail: string;
 
+  @Expose()
   createdAt: string;
 
-  static of(board: Board[]): ResponseAllBoardDto[] {
-    return board.map((board) => ({
-      boardId: board.boardId,
-
-      type: board.type,
-
-      thumbnail: board.thumbnail,
-
-      title: board.title,
-
-      detail: board.detail,
-
-      createdAt: board.createdAt,
-    }));
+  static listOf(board: Board[]): ResponseAllBoardDto[] {
+    return plainToInstance(ResponseAllBoardDto, board);
   }
 }

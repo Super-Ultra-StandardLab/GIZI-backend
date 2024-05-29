@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BoardType } from './enum/boardType-type';
 @Entity()
 export class Board {
@@ -7,7 +12,7 @@ export class Board {
 
   @Column({
     type: 'enum',
-    enum: ['notice', 'news', 'activity'],
+    enum: BoardType,
   })
   type: BoardType;
 
@@ -20,6 +25,6 @@ export class Board {
   @Column({ nullable: false, type: 'text' })
   detail: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: string;
 }
