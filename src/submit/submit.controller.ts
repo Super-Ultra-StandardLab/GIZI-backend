@@ -16,13 +16,13 @@ import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 export class SubmitController {
   constructor(private readonly submitService: SubmitService) {}
 
-  // guard 추가하기
+  // TODO: guard 추가하기
   @Get()
   findAll(): Promise<Submit[]> {
     return this.submitService.findAll();
   }
 
-  // guard 추가하기
+  // TODO: guard 추가하기
   @Get(':id')
   async findOne(@Param('id') id: bigint): Promise<ResponseSubmitDto> {
     return await this.submitService.findOne(id);
@@ -34,7 +34,7 @@ export class SubmitController {
     return this.submitService.create(createSubmitDto);
   }
 
-  // guard 추가하기
+  // TODO: guard 추가하기
   @Delete(':id')
   remove(@Param('id') id: bigint) {
     return this.submitService.remove(id);

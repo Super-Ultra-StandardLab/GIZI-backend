@@ -19,9 +19,4 @@ export class VerifyController {
   async verifyCode(@Body() verifyRequestDto: VerifyRequestDto) {
     return this.verifyService.verify(verifyRequestDto);
   }
-
-  @Get()
-  findAll() {
-    return this.verifyService.findAll();
-  }
 }

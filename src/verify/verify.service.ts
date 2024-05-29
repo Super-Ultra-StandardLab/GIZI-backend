@@ -52,8 +52,4 @@ export class VerifyService {
 
     return verifyResponse;
   }
-
-  findAll() {
-    return this.PhoneVerifyRepository.find();
-  }
 }
