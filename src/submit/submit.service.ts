@@ -34,7 +34,7 @@ export class SubmitService {
   }
 
   async findAll(): Promise<Submit[]> {
-    return ResponseAllSubmitDto.of(await this.SubmitRepository.find());
+    return ResponseAllSubmitDto.listOf(await this.SubmitRepository.find());
   }
 
   async findOne(programId: bigint): Promise<ResponseSubmitDto> {
