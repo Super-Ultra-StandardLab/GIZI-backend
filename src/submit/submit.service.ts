@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
+import { validateDate } from 'src/verify/function/validateDate';
 
 @Injectable()
 export class SubmitService {
@@ -18,17 +19,7 @@ export class SubmitService {
     const checkDate = await this.SubmitRepository.find({
       where: { date: createSubmitDto.date },
     });
-
-    if (createSubmitDto.time === 'allday' && checkDate.length !== 0) {
-      throw new ConflictException('선택하신 시간에 이미 신청자가 존재합니다.'); // FIXME: 나중에 한번에 customException으로 처리하기
-    }
-    checkDate.forEach((item) => {
-      if (item.time === createSubmitDto.time || item.time === 'allday') {
-        throw new ConflictException(
-          `선택하신 시간에 이미 신청자가 존재합니다.`, // FIXME: 나중에 한번에 customException으로 처리하기
-        );
-      }
-    });
+    validateDate(checkDate, createSubmitDto);
 
     return await this.SubmitRepository.save(createSubmitDto);
   }
