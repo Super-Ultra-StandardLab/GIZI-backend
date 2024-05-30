@@ -1,21 +1,15 @@
 import {
+  BaseEntity as TypeORMBaseEntity,
   Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
+import { DateEntity } from './date.entity';
 
 @Entity()
-export class PhoneVerify {
+export class PhoneVerify extends DateEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @Column()
   phoneNumber: string;

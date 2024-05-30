@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -16,6 +18,6 @@ async function bootstrap() {
     }),
   );
   app.useStaticAssets(join(__dirname, '../images'), { prefix: '/image/' });
-  await app.listen(3000);
+  await app.listen(process.env.PORT_NUMBER);
 }
 bootstrap();

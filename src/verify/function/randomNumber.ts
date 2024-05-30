@@ -1,11 +1,6 @@
-export function generateNumericToken(
-  length: number = 6,
-  alphabet: string = '1234567890',
-): string {
-  let id = '';
-  let i = length;
-  while (i--) {
-    id += alphabet[(Math.random() * alphabet.length) | 0];
-  }
+import * as crypto from 'crypto';
+
+export function generateNumericToken(): string {
+  const id = crypto.randomInt(100000, 999999).toString();
   return id;
 }
