@@ -6,13 +6,16 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
+import { ImageResponseDto } from './dto/response/image-response-dto';
 
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  async uploadImage(@UploadedFile() fileName: Express.Multer.File) {
+  async uploadImage(
+    @UploadedFile() fileName: Express.Multer.File,
+  ): Promise<ImageResponseDto> {
     const image = await this.uploadService.getStorageOptions(fileName);
 
     return { image };
