@@ -12,7 +12,6 @@ export class Submit {
   @Column({
     type: 'enum',
     enum: ['morning', 'afternoon', 'allday'],
-    default: 'allday',
   })
   time: TimeType;
 

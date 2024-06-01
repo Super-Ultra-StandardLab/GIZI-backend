@@ -1,5 +1,5 @@
 import { Expose, plainToInstance } from 'class-transformer';
-import { TimeType } from 'src/submit/entities/enum/time-type';
+import { TimeType } from '../../entities/enum/time-type';
 import { Submit } from 'src/submit/entities/submit.entity';
 
 export class ResponseAllSubmitDto {

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateVerifyDto } from './dto/request/create-verify.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneVerify } from './entities/verify.entity';
