@@ -26,6 +26,7 @@ export class SubmitService {
 
   async findAll(): Promise<Submit[]> {
     return ResponseAllSubmitDto.listOf(
+      // TODO: notfound 처리하기
       await this.SubmitRepository.find({
         order: {
           date: 'DESC',
