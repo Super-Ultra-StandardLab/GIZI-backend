@@ -2,7 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
 import { validateDate } from 'src/verify/function/validateDate';
@@ -14,7 +14,7 @@ export class SubmitService {
     private readonly SubmitRepository: Repository<Submit>,
   ) {}
 
-  async create(createSubmitDto: CreateSubmitDto) {
+  async create(createSubmitDto: CreateSubmitDto): Promise<Submit> {
     // 만약 신청 꽉 차서 못 하는 날짜일 경우에는 필터링
     const checkDate = await this.SubmitRepository.find({
       where: { date: createSubmitDto.date },
@@ -40,7 +40,7 @@ export class SubmitService {
     );
   }
 
-  remove(programId: bigint) {
+  remove(programId: bigint): Promise<DeleteResult> {
     return this.SubmitRepository.delete({ programId });
   }
 }

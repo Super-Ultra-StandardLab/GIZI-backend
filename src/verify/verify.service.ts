@@ -35,7 +35,7 @@ export class VerifyService {
     return verifyResponse;
   }
 
-  async verify(verifyRequestDto: VerifyRequestDto) {
+  async verify(verifyRequestDto: VerifyRequestDto): Promise<VerifyResponseDto> {
     const { phoneNumber, verifyCode } = verifyRequestDto;
 
     const phoneVerification =
