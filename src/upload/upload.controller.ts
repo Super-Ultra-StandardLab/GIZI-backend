@@ -14,9 +14,10 @@ export class UploadController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async uploadImage(
-    @UploadedFile() fileName: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<ImageResponseDto> {
-    const image = await this.uploadService.getStorageOptions(fileName);
+    console.log(file);
+    const image = await this.uploadService.storageImage(file);
 
     return { image };
   }

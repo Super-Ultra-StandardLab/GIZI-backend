@@ -6,7 +6,7 @@ import { ImageResponseDto } from './dto/response/image-response-dto';
 
 @Injectable()
 export class UploadService {
-  getStorageOptions(file: Express.Multer.File) {
+  storageImage(file: Express.Multer.File) {
     folderExistChecker();
     const fileName = `${generateRandomFileName()}` + `${file.originalname}`;
     return new Promise<string>((resolve, reject) => {

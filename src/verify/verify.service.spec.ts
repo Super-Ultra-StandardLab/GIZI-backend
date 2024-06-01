@@ -28,7 +28,7 @@ describe('VerifyService', () => {
     );
   });
 
-  it('객체가 정의되었는지', () => {
+  it('verifyservice가 정의되었는지', () => {
     expect(verifyservice).toBeDefined();
   });
 
