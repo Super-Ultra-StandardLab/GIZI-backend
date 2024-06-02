@@ -3,8 +3,6 @@ import { VerifyService } from './verify.service';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { PhoneVerify } from './entities/verify.entity';
-import { CreateVerifyDto } from './dto/request/create-verify.dto';
-import { VerifyRequestDto } from './dto/request/verify-request-dto';
 import { VerifyResponseDto } from './dto/response/verify-response-dto';
 import {
   PhoneNumberData,
@@ -37,30 +35,26 @@ describe('VerifyService', () => {
     expect(verifyservice).toBeDefined();
   });
 
-  describe('createVerify', () => {
+  describe('인증번호 생성', () => {
     it('전화번호를 입력하면 result를 반환하는지', async () => {
-      const CreateVerifyDto: CreateVerifyDto = PhoneNumberData;
       const saveSpy = jest
         .spyOn(phoneVerifyRepository, 'save')
         .mockResolvedValue(null);
 
-      const result = await verifyservice.createVerify(CreateVerifyDto);
+      const result = await verifyservice.createVerify(PhoneNumberData);
 
       expect(saveSpy).toHaveBeenCalled();
       expect(result).toEqual(VerifyResponseDto.of(true));
     });
   });
 
-  describe('verify', () => {
+  describe('인증번호 비교', () => {
     it('인증번호를 비교하고 맞다면 true를 반환하는지', async () => {
-      const verifyRequestDto: VerifyRequestDto = verifyData;
-      const phoneVerification: PhoneVerify = verifyResponseData;
-
       const createQueryBuilderMock = {
         where: jest.fn().mockReturnThis(),
         andWhere: jest.fn().mockReturnThis(),
         orderBy: jest.fn().mockReturnThis(),
-        getOne: jest.fn().mockResolvedValue(phoneVerification),
+        getOne: jest.fn().mockResolvedValue(verifyResponseData),
       };
 
       jest
@@ -70,20 +64,18 @@ describe('VerifyService', () => {
         .spyOn(phoneVerifyRepository, 'update')
         .mockResolvedValue(null);
 
-      const result = await verifyservice.verify(verifyRequestDto);
+      const result = await verifyservice.verify(verifyData);
 
       expect(createQueryBuilderMock.where).toHaveBeenCalled();
       expect(createQueryBuilderMock.andWhere).toHaveBeenCalled();
       expect(createQueryBuilderMock.getOne).toHaveBeenCalled();
-      expect(updateSpy).toHaveBeenCalledWith(phoneVerification.id, {
+      expect(updateSpy).toHaveBeenCalledWith(verifyResponseData.id, {
         isVerified: true,
       });
       expect(result).toEqual(VerifyResponseDto.of(true));
     });
 
     it('인증번호를 비교하고 틀리다면 false를 반환하는지', async () => {
-      const verifyRequestDto: VerifyRequestDto = verifyData;
-
       const createQueryBuilderMock = {
         where: jest.fn().mockReturnThis(),
         andWhere: jest.fn().mockReturnThis(),
@@ -95,7 +87,7 @@ describe('VerifyService', () => {
         .spyOn(phoneVerifyRepository, 'createQueryBuilder')
         .mockReturnValue(createQueryBuilderMock as any);
 
-      const result = await verifyservice.verify(verifyRequestDto);
+      const result = await verifyservice.verify(verifyData);
 
       expect(createQueryBuilderMock.where).toHaveBeenCalled();
       expect(createQueryBuilderMock.andWhere).toHaveBeenCalled();

@@ -11,7 +11,6 @@ import {
   morningTypeResponseData,
   morningTypeSubmitData,
 } from '../global/tests/data/submit-data';
-import { CreateSubmitDto } from './dto/request/create-submit.dto';
 
 describe('SubmitService', () => {
   let submitService: SubmitService;
@@ -40,48 +39,45 @@ describe('SubmitService', () => {
 
   describe('create', () => {
     it('정상적인 신청이 잘 되는지', async () => {
-      const CreateSubmitDto: CreateSubmitDto = alldayTypeSubmitData;
       const submit = new Submit();
 
       jest.spyOn(submitRepository, 'find').mockResolvedValue([]);
       jest.spyOn(submitRepository, 'save').mockResolvedValue(submit);
 
-      const result = await submitService.create(CreateSubmitDto);
+      const result = await submitService.create(alldayTypeSubmitData);
 
       expect(result).toEqual(submit);
       expect(submitRepository.find).toHaveBeenCalledWith({
-        where: { date: CreateSubmitDto.date },
+        where: { date: alldayTypeSubmitData.date },
       });
-      expect(submitRepository.save).toHaveBeenCalledWith(CreateSubmitDto);
+      expect(submitRepository.save).toHaveBeenCalledWith(alldayTypeSubmitData);
     });
 
     it('날짜에 allday가 존재할 때 요청하면 exception이 발생하는가', async () => {
-      const CreateSubmitDto: CreateSubmitDto = morningTypeSubmitData;
-      const Submit: Submit = alldayTypeResponseData;
-
-      jest.spyOn(submitRepository, 'find').mockResolvedValue([Submit]);
+      jest
+        .spyOn(submitRepository, 'find')
+        .mockResolvedValue([alldayTypeResponseData]);
 
       await expect(async () => {
-        await submitService.create(CreateSubmitDto);
+        await submitService.create(morningTypeSubmitData);
       }).rejects.toThrow(
         new ConflictException('선택하신 시간에 이미 신청자가 존재합니다.'),
       );
       expect(submitRepository.find).toHaveBeenCalledWith({
-        where: { date: CreateSubmitDto.date },
+        where: { date: morningTypeSubmitData.date },
       });
     });
 
     it('같은 날짜 & 시간이 존재할 때 요청하면 exception이 발생하는가', async () => {
-      const CreateSubmitDto: CreateSubmitDto = morningTypeSubmitData;
-      const Submit: Submit = morningTypeResponseData;
-
-      jest.spyOn(submitRepository, 'find').mockResolvedValue([Submit]);
+      jest
+        .spyOn(submitRepository, 'find')
+        .mockResolvedValue([morningTypeResponseData]);
 
       await expect(async () => {
-        await submitService.create(CreateSubmitDto);
+        await submitService.create(morningTypeSubmitData);
       }).rejects.toThrow(new DateConflictException());
       expect(submitRepository.find).toHaveBeenCalledWith({
-        where: { date: CreateSubmitDto.date },
+        where: { date: morningTypeSubmitData.date },
       });
     });
   });

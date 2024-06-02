@@ -1,6 +1,6 @@
-import { Expose, plainToClass, plainToInstance } from 'class-transformer';
+import { Expose, plainToInstance } from 'class-transformer';
 import { Board } from 'src/board/entities/board.entity';
-import { BoardType } from 'src/board/entities/enum/boardType-type';
+import { BoardType } from '../../entities/enum/boardType-type';
 
 export class ResponseAllBoardDto {
   @Expose()
