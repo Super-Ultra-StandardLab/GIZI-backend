@@ -43,7 +43,7 @@ export const afternoonTypeSubmitData: CreateSubmitDto = {
 };
 
 export const alldayTypeResponseData: Submit = {
-  programId: BigInt(1),
+  programId: 1,
   programName: 'testProgram',
   time: TimeType.ALLDAY,
   date: '2024-06-02',
@@ -57,7 +57,7 @@ export const alldayTypeResponseData: Submit = {
 };
 
 export const morningTypeResponseData: Submit = {
-  programId: BigInt(1),
+  programId: 1,
   programName: 'testProgram',
   time: TimeType.MORNING,
   date: '2024-06-02',

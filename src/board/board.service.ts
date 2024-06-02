@@ -19,7 +19,7 @@ export class BoardService {
     return this.BoardRepository.save(createBoardDto);
   }
 
-  async findOne(boardId: bigint): Promise<ResponseBoardDto> {
+  async findOne(boardId: number): Promise<ResponseBoardDto> {
     const result = ResponseBoardDto.of(
       await this.BoardRepository.findOne({ where: { boardId } }),
     );

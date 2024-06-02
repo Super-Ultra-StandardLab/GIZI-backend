@@ -8,7 +8,7 @@ export const findByTypeData: FindByTypeDto = {
 
 export const defaultResponseData: Board[] = [
   {
-    boardId: BigInt(1),
+    boardId: 1,
     type: BoardType.ACTIVITY,
     thumbnail: 'testThumbnail',
     title: 'test',

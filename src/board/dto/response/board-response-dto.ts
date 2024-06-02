@@ -4,7 +4,7 @@ import { BoardType } from '../../entities/enum/boardType-type';
 
 export class ResponseBoardDto {
   @Expose()
-  boardId: bigint;
+  boardId: number;
 
   @Expose()
   type: BoardType;

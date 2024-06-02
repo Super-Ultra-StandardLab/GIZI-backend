@@ -35,13 +35,13 @@ export class SubmitService {
     );
   }
 
-  async findOne(programId: bigint): Promise<ResponseSubmitDto> {
+  async findOne(programId: number): Promise<ResponseSubmitDto> {
     return ResponseSubmitDto.of(
       await this.SubmitRepository.findOne({ where: { programId } }),
     );
   }
 
-  remove(programId: bigint): Promise<DeleteResult> {
+  remove(programId: number): Promise<DeleteResult> {
     return this.SubmitRepository.delete({ programId });
   }
 }

@@ -4,7 +4,7 @@ import { TimeType } from './enum/time-type';
 @Entity()
 export class Submit {
   @PrimaryGeneratedColumn()
-  programId: bigint;
+  programId: number;
 
   @Column()
   programName: string;

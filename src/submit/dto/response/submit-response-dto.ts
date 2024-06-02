@@ -4,7 +4,7 @@ import { Submit } from 'src/submit/entities/submit.entity';
 
 export class ResponseSubmitDto {
   @Expose()
-  programId: bigint;
+  programId: number;
 
   @Expose()
   programName: string;

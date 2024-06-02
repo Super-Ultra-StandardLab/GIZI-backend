@@ -8,7 +8,7 @@ import { BoardType } from './enum/boardType-type';
 @Entity()
 export class Board {
   @PrimaryGeneratedColumn()
-  boardId: bigint;
+  boardId: number;
 
   @Column({
     type: 'enum',
