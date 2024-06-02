@@ -60,9 +60,7 @@ describe('SubmitService', () => {
 
       await expect(async () => {
         await submitService.create(morningTypeSubmitData);
-      }).rejects.toThrow(
-        new ConflictException('선택하신 시간에 이미 신청자가 존재합니다.'),
-      );
+      }).rejects.toThrow(new DateConflictException());
       expect(submitRepository.find).toHaveBeenCalledWith({
         where: { date: morningTypeSubmitData.date },
       });

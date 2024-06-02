@@ -23,7 +23,6 @@ export class BoardService {
     const result = ResponseBoardDto.of(
       await this.BoardRepository.findOne({ where: { boardId } }),
     );
-    console.log(result);
     if (!result) throw new NotFoundException();
     return result;
   }
