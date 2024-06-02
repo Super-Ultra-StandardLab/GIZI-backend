@@ -25,7 +25,7 @@ export class SubmitController {
 
   // TODO: guard 추가하기
   @Get(':id')
-  async findOne(@Param('id') id: bigint): Promise<ResponseSubmitDto> {
+  async findOne(@Param('id') id: number): Promise<ResponseSubmitDto> {
     return await this.submitService.findOne(id);
   }
 
@@ -37,7 +37,7 @@ export class SubmitController {
 
   // TODO: guard 추가하기
   @Delete(':id')
-  remove(@Param('id') id: bigint): Promise<DeleteResult> {
+  remove(@Param('id') id: number): Promise<DeleteResult> {
     return this.submitService.remove(id);
   }
 }

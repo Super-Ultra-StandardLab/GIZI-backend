@@ -32,7 +32,7 @@ export class BoardController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: bigint): Promise<ResponseBoardDto> {
+  findOne(@Param('id') id: number): Promise<ResponseBoardDto> {
     return this.boardService.findOne(id);
   }
 
