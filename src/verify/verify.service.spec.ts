@@ -6,6 +6,11 @@ import { PhoneVerify } from './entities/verify.entity';
 import { CreateVerifyDto } from './dto/request/create-verify.dto';
 import { VerifyRequestDto } from './dto/request/verify-request-dto';
 import { VerifyResponseDto } from './dto/response/verify-response-dto';
+import {
+  PhoneNumberData,
+  verifyData,
+  verifyResponseData,
+} from '../global/tests/data/verify-data';
 
 describe('VerifyService', () => {
   let verifyservice: VerifyService;
@@ -34,12 +39,12 @@ describe('VerifyService', () => {
 
   describe('createVerify', () => {
     it('전화번호를 입력하면 result를 반환하는지', async () => {
-      const createVerifyDto: CreateVerifyDto = { phoneNumber: '01012341234' };
+      const CreateVerifyDto: CreateVerifyDto = PhoneNumberData;
       const saveSpy = jest
         .spyOn(phoneVerifyRepository, 'save')
         .mockResolvedValue(null);
 
-      const result = await verifyservice.createVerify(createVerifyDto);
+      const result = await verifyservice.createVerify(CreateVerifyDto);
 
       expect(saveSpy).toHaveBeenCalled();
       expect(result).toEqual(VerifyResponseDto.of(true));
@@ -48,17 +53,8 @@ describe('VerifyService', () => {
 
   describe('verify', () => {
     it('인증번호를 비교하고 맞다면 true를 반환하는지', async () => {
-      const verifyRequestDto: VerifyRequestDto = {
-        phoneNumber: '01012341234',
-        verifyCode: '123456',
-      };
-      const phoneVerification = {
-        id: 1,
-        phoneNumber: '01012341234',
-        verifyCode: '123456',
-        isVerified: false,
-        expiredAt: new Date(),
-      } as PhoneVerify;
+      const verifyRequestDto: VerifyRequestDto = verifyData;
+      const phoneVerification: PhoneVerify = verifyResponseData;
 
       const createQueryBuilderMock = {
         where: jest.fn().mockReturnThis(),
@@ -86,10 +82,7 @@ describe('VerifyService', () => {
     });
 
     it('인증번호를 비교하고 틀리다면 false를 반환하는지', async () => {
-      const verifyRequestDto: VerifyRequestDto = {
-        phoneNumber: '01073150229',
-        verifyCode: '654321',
-      };
+      const verifyRequestDto: VerifyRequestDto = verifyData;
 
       const createQueryBuilderMock = {
         where: jest.fn().mockReturnThis(),
