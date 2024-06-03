@@ -8,6 +8,8 @@ import {
   oneBoardResponseData,
   defaultBoardResponseData,
   boardIdData,
+  boardUpdateResponseData,
+  updateRequestData,
 } from '../global/tests/data/board-data';
 import { NotFoundException } from '@nestjs/common';
 
@@ -81,6 +83,20 @@ describe('BoardService', () => {
       expect(boardRepository.findOne).toHaveBeenCalledWith({
         where: { boardId: boardIdData },
       });
+    });
+  });
+  describe('update하기', () => {
+    it('정상적으로 동작하는지', async () => {
+      jest
+        .spyOn(boardRepository, 'update')
+        .mockResolvedValueOnce(boardUpdateResponseData);
+      const result = await boardService.update(boardIdData, updateRequestData);
+
+      expect(result).toEqual(boardUpdateResponseData);
+      expect(boardRepository.update).toHaveBeenCalledWith(
+        boardIdData,
+        updateRequestData,
+      );
     });
   });
 });
