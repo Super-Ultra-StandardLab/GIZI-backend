@@ -9,7 +9,8 @@ import {
   defaultBoardResponseData,
   boardIdData,
   boardUpdateResponseData,
-  updateRequestData,
+  boardUpdateRequestData,
+  boardDeleteResponseData,
 } from '../global/tests/data/board-data';
 import { NotFoundException } from '@nestjs/common';
 
@@ -89,14 +90,29 @@ describe('BoardService', () => {
     it('정상적으로 동작하는지', async () => {
       jest
         .spyOn(boardRepository, 'update')
-        .mockResolvedValueOnce(boardUpdateResponseData);
-      const result = await boardService.update(boardIdData, updateRequestData);
+        .mockResolvedValue(boardUpdateResponseData);
+      const result = await boardService.update(
+        boardIdData,
+        boardUpdateRequestData,
+      );
 
       expect(result).toEqual(boardUpdateResponseData);
       expect(boardRepository.update).toHaveBeenCalledWith(
         boardIdData,
-        updateRequestData,
+        boardUpdateRequestData,
       );
+    });
+  });
+
+  describe('delete하기', () => {
+    it('정상적으로 동작하는지', async () => {
+      jest
+        .spyOn(boardRepository, 'delete')
+        .mockResolvedValue(boardDeleteResponseData);
+      const result = await boardService.remove(boardIdData);
+
+      expect(result).toEqual(boardDeleteResponseData);
+      expect(boardRepository.delete).toHaveBeenCalledWith(boardIdData);
     });
   });
 });
