@@ -3,14 +3,17 @@ import { SubmitService } from './submit.service';
 import { Submit } from './entities/submit.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ConflictException } from '@nestjs/common';
 import { DateConflictException } from '../global/exception/custom-exception';
 import {
   alldayTypeResponseData,
   alldayTypeSubmitData,
+  findAllResponseData,
+  findOneRequestId,
+  findOneResponseData,
   morningTypeResponseData,
   morningTypeSubmitData,
 } from '../global/tests/data/submit-data';
+import { NotFoundException } from '@nestjs/common';
 
 describe('SubmitService', () => {
   let submitService: SubmitService;
@@ -76,6 +79,53 @@ describe('SubmitService', () => {
       }).rejects.toThrow(new DateConflictException());
       expect(submitRepository.find).toHaveBeenCalledWith({
         where: { date: morningTypeSubmitData.date },
+      });
+    });
+  });
+  describe('findAll', () => {
+    it('잘 작동하는지', async () => {
+      jest
+        .spyOn(submitRepository, 'find')
+        .mockResolvedValue(findAllResponseData);
+      const result = await submitService.findAll();
+
+      expect(result).toEqual(findAllResponseData);
+      expect(submitRepository.find).toHaveBeenCalledWith({
+        order: { date: 'DESC' },
+      });
+    });
+
+    it('find할 게 없다면 NotFoundException이 발생하는지', async () => {
+      jest.spyOn(submitRepository, 'find').mockResolvedValue([]);
+
+      await expect(async () => {
+        await submitService.findAll();
+      }).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('findOne', () => {
+    it('잘 작동하는지', async () => {
+      jest
+        .spyOn(submitRepository, 'findOne')
+        .mockResolvedValue(findOneResponseData);
+
+      const result = await submitService.findOne(findOneRequestId);
+
+      expect(result).toEqual(findOneResponseData);
+      expect(submitRepository.findOne).toHaveBeenCalledWith({
+        where: { programId: findOneRequestId },
+      });
+    });
+
+    it('findOne할 게 없다면 NotFoundException이 발생하는지', async () => {
+      jest.spyOn(submitRepository, 'findOne').mockResolvedValue(null);
+
+      await expect(async () => {
+        await submitService.findOne(findOneRequestId);
+      }).rejects.toThrow(NotFoundException);
+      expect(submitRepository.findOne).toHaveBeenCalledWith({
+        where: { programId: findOneRequestId },
       });
     });
   });
