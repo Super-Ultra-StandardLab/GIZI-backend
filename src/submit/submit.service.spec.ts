@@ -40,8 +40,8 @@ describe('SubmitService', () => {
     expect(submitService).toBeDefined();
   });
 
-  describe('create', () => {
-    it('정상적인 신청이 잘 되는지', async () => {
+  describe('게시물을 생성한다.', () => {
+    it('성공', async () => {
       const submit = new Submit();
 
       jest.spyOn(submitRepository, 'find').mockResolvedValue([]);
@@ -56,7 +56,7 @@ describe('SubmitService', () => {
       expect(submitRepository.save).toHaveBeenCalledWith(alldayTypeSubmitData);
     });
 
-    it('날짜에 allday가 존재할 때 요청하면 exception이 발생하는가', async () => {
+    it('실패 - 날짜에 allday가 존재할 때 요청하면 exception이 발생한다.', async () => {
       jest
         .spyOn(submitRepository, 'find')
         .mockResolvedValue([alldayTypeResponseData]);
@@ -69,7 +69,7 @@ describe('SubmitService', () => {
       });
     });
 
-    it('같은 날짜 & 시간이 존재할 때 요청하면 exception이 발생하는가', async () => {
+    it('실패 - 같은 날짜 & 시간이 존재할 때 요청하면 exception이 발생한다.', async () => {
       jest
         .spyOn(submitRepository, 'find')
         .mockResolvedValue([morningTypeResponseData]);
@@ -83,7 +83,7 @@ describe('SubmitService', () => {
     });
   });
   describe('findAll', () => {
-    it('잘 작동하는지', async () => {
+    it('성공', async () => {
       jest
         .spyOn(submitRepository, 'find')
         .mockResolvedValue(findAllResponseData);
@@ -95,7 +95,7 @@ describe('SubmitService', () => {
       });
     });
 
-    it('find할 게 없다면 NotFoundException이 발생하는지', async () => {
+    it('실패 - 찾는 게시물이 없다면 NotFoundException이 발생한다.', async () => {
       jest.spyOn(submitRepository, 'find').mockResolvedValue([]);
 
       await expect(async () => {
