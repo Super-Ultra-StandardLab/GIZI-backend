@@ -36,8 +36,8 @@ describe('BoardService', () => {
     expect(boardService).toBeDefined();
   });
 
-  describe('Type에 따라 찾기', () => {
-    it('정상적으로 find되는지', async () => {
+  describe('type으로 게시글을 찾는다. ', () => {
+    it('성공', async () => {
       jest
         .spyOn(boardRepository, 'find')
         .mockResolvedValue(defaultBoardResponseData);
@@ -50,7 +50,7 @@ describe('BoardService', () => {
       });
     });
 
-    it('find할 게 없다면 NotFoundException이 발생하는지', async () => {
+    it('실패 - 찾는 게시물이 없다면 NotFoundException 발생', async () => {
       jest.spyOn(boardRepository, 'find').mockResolvedValue([]);
 
       await expect(async () => {
@@ -62,8 +62,8 @@ describe('BoardService', () => {
     });
   });
 
-  describe('findOne하기', () => {
-    it('정상적으로 동작하는지', async () => {
+  describe('findOne한다.', () => {
+    it('성공', async () => {
       jest
         .spyOn(boardRepository, 'findOne')
         .mockResolvedValue(oneBoardResponseData);
@@ -75,7 +75,7 @@ describe('BoardService', () => {
       });
     });
 
-    it('find할 게 없다면 NotFoundException이 발생하는지', async () => {
+    it('실패 - 찾는 게시물이 없다면 NotFoundException 발생', async () => {
       jest.spyOn(boardRepository, 'findOne').mockResolvedValueOnce(null);
 
       await expect(async () => {
@@ -86,8 +86,8 @@ describe('BoardService', () => {
       });
     });
   });
-  describe('update하기', () => {
-    it('정상적으로 동작하는지', async () => {
+  describe('update한다.', () => {
+    it('성공', async () => {
       jest
         .spyOn(boardRepository, 'update')
         .mockResolvedValue(boardUpdateResponseData);
@@ -104,8 +104,8 @@ describe('BoardService', () => {
     });
   });
 
-  describe('delete하기', () => {
-    it('정상적으로 동작하는지', async () => {
+  describe('delete한다.', () => {
+    it('성공', async () => {
       jest
         .spyOn(boardRepository, 'delete')
         .mockResolvedValue(boardDeleteResponseData);
