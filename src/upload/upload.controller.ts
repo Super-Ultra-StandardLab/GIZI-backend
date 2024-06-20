@@ -16,7 +16,6 @@ export class UploadController {
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<ImageResponseDto> {
-    console.log(file);
     const image = await this.uploadService.storageImage(file);
 
     return { image };
