@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBoardDto } from './dto/request/create-board.dto';
 import { UpdateBoardDto } from './dto/request/update-board.dto';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseAllBoardDto } from './dto/response/all-board-response-dto';
 import { FindByTypeDto } from './dto/request/find-by-type-dto';
+import { ResponseBoardDto } from './dto/response/board-response-dto';
 
 @Injectable()
 export class BoardService {
@@ -18,24 +19,33 @@ export class BoardService {
     return this.BoardRepository.save(createBoardDto);
   }
 
-  findOne(boardId: bigint) {
-    return this.BoardRepository.findOne({ where: { boardId } });
+  async findOne(boardId: number): Promise<ResponseBoardDto> {
+    const result = ResponseBoardDto.of(
+      await this.BoardRepository.findOne({ where: { boardId } }),
+    );
+    if (!result) throw new NotFoundException();
+    return result;
   }
 
   async findByType(findByTypeDto: FindByTypeDto): Promise<Board[]> {
-    return ResponseAllBoardDto.listOf(
+    const result = ResponseAllBoardDto.listOf(
       await this.BoardRepository.find({
         where: {
           type: findByTypeDto.type,
         },
       }),
     );
+    if (result.length == 0) throw new NotFoundException();
+    return result;
   }
-  update(boardId: number, updateBoardDto: UpdateBoardDto) {
+  update(
+    boardId: number,
+    updateBoardDto: UpdateBoardDto,
+  ): Promise<UpdateResult> {
     return this.BoardRepository.update(boardId, updateBoardDto);
   }
 
-  remove(id: number) {
+  remove(id: number): Promise<DeleteResult> {
     return this.BoardRepository.delete(id);
   }
 }

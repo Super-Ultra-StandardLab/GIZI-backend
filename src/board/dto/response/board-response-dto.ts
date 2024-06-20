@@ -2,7 +2,7 @@ import { Expose, plainToInstance } from 'class-transformer';
 import { Board } from 'src/board/entities/board.entity';
 import { BoardType } from '../../entities/enum/boardType-type';
 
-export class ResponseAllBoardDto {
+export class ResponseBoardDto {
   @Expose()
   boardId: number;
 
@@ -21,7 +21,7 @@ export class ResponseAllBoardDto {
   @Expose()
   createdAt: string;
 
-  static listOf(board: Board[]): ResponseAllBoardDto[] {
-    return plainToInstance(ResponseAllBoardDto, board);
+  static of(board: Board): ResponseBoardDto {
+    return plainToInstance(ResponseBoardDto, board);
   }
 }

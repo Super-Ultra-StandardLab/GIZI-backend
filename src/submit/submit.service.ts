@@ -1,11 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
-import { validateDate } from 'src/verify/function/validateDate';
+import { validateDate } from './function/validateDate';
 
 @Injectable()
 export class SubmitService {
@@ -14,7 +14,7 @@ export class SubmitService {
     private readonly SubmitRepository: Repository<Submit>,
   ) {}
 
-  async create(createSubmitDto: CreateSubmitDto) {
+  async create(createSubmitDto: CreateSubmitDto): Promise<Submit> {
     // 만약 신청 꽉 차서 못 하는 날짜일 경우에는 필터링
     const checkDate = await this.SubmitRepository.find({
       where: { date: createSubmitDto.date },
@@ -25,22 +25,27 @@ export class SubmitService {
   }
 
   async findAll(): Promise<Submit[]> {
-    return ResponseAllSubmitDto.listOf(
+    const result = ResponseAllSubmitDto.listOf(
+      // TODO: 디자인 보고 전체 신청에서는 뭐만 select해서 띄울지 설정하기
       await this.SubmitRepository.find({
         order: {
           date: 'DESC',
         },
       }),
     );
+    if (result.length == 0) throw new NotFoundException();
+    return result;
   }
 
-  async findOne(programId: bigint): Promise<ResponseSubmitDto> {
-    return ResponseSubmitDto.of(
+  async findOne(programId: number): Promise<ResponseSubmitDto> {
+    const result = ResponseSubmitDto.of(
       await this.SubmitRepository.findOne({ where: { programId } }),
     );
+    if (!result) throw new NotFoundException();
+    return result;
   }
 
-  remove(programId: bigint) {
+  remove(programId: number): Promise<DeleteResult> {
     return this.SubmitRepository.delete({ programId });
   }
 }

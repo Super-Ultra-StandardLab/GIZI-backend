@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateVerifyDto } from './dto/request/create-verify.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneVerify } from './entities/verify.entity';
@@ -35,7 +35,7 @@ export class VerifyService {
     return verifyResponse;
   }
 
-  async verify(verifyRequestDto: VerifyRequestDto) {
+  async verify(verifyRequestDto: VerifyRequestDto): Promise<VerifyResponseDto> {
     const { phoneNumber, verifyCode } = verifyRequestDto;
 
     const phoneVerification =

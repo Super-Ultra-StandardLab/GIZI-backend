@@ -4,7 +4,7 @@ import { TimeType } from './enum/time-type';
 @Entity()
 export class Submit {
   @PrimaryGeneratedColumn()
-  programId: bigint;
+  programId: number;
 
   @Column()
   programName: string;
@@ -12,7 +12,6 @@ export class Submit {
   @Column({
     type: 'enum',
     enum: ['morning', 'afternoon', 'allday'],
-    default: 'allday',
   })
   time: TimeType;
 

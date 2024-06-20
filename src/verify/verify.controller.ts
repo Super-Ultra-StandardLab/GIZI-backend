@@ -16,7 +16,9 @@ export class VerifyController {
   }
 
   @Post()
-  async verifyCode(@Body() verifyRequestDto: VerifyRequestDto) {
+  async verifyCode(
+    @Body() verifyRequestDto: VerifyRequestDto,
+  ): Promise<VerifyResponseDto> {
     return this.verifyService.verify(verifyRequestDto);
   }
 }
