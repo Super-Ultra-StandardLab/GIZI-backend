@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Between, DeleteResult, Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
 import { validateDate } from './function/validateDate';
@@ -34,6 +34,21 @@ export class SubmitService {
       }),
     );
     if (result.length == 0) throw new NotFoundException();
+    return result;
+  }
+
+  async findCalendar(month: number, year: number): Promise<Submit[]> {
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+    const endDate = `${year}-${String(month).padStart(2, '0')}-${new Date(year, month, 0).getDate()}`;
+
+    const result = ResponseAllSubmitDto.listOf(
+      await this.SubmitRepository.find({
+        where: {
+          date: Between(startDate, endDate),
+        },
+      }),
+    );
+
     return result;
   }
 
