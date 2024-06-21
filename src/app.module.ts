@@ -5,6 +5,7 @@ import { SubmitModule } from './submit/submit.module';
 import { VerifyModule } from './verify/verify.module';
 import { BoardModule } from './board/board.module';
 import { UploadModule } from './upload/upload.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UploadModule } from './upload/upload.module';
       envFilePath: '.env',
       isGlobal: true,
     }),
+    AuthModule,
     DatabaseModule,
     SubmitModule,
     VerifyModule,
