@@ -6,7 +6,6 @@ import { Between, DeleteResult, Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
 import { validateDate } from './function/validateDate';
-import { ListResponse } from 'src/global/response/list-response.dto';
 
 @Injectable()
 export class SubmitService {
@@ -25,7 +24,7 @@ export class SubmitService {
     return await this.SubmitRepository.save(createSubmitDto);
   }
 
-  async findAll(): Promise<ListResponse<Submit>> {
+  async findAll(): Promise<Submit[]> {
     const result = ResponseAllSubmitDto.listOf(
       // TODO: 디자인 보고 전체 신청에서는 뭐만 select해서 띄울지 설정하기
       await this.SubmitRepository.find({
@@ -35,13 +34,10 @@ export class SubmitService {
       }),
     );
     if (result.length == 0) throw new NotFoundException();
-    return ListResponse.of(result);
+    return result;
   }
 
-  async findCalendar(
-    month: number,
-    year: number,
-  ): Promise<ListResponse<Submit>> {
+  async findCalendar(month: number, year: number): Promise<Submit[]> {
     const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
     const endDate = `${year}-${String(month).padStart(2, '0')}-${new Date(year, month, 0).getDate()}`;
 
@@ -53,7 +49,7 @@ export class SubmitService {
       }),
     );
 
-    return ListResponse.of(result);
+    return result;
   }
 
   async findOne(programId: number): Promise<ResponseSubmitDto> {

@@ -19,10 +19,12 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+
 @Controller('board')
 @ApiTags('게시판')
 export class BoardController {
@@ -44,6 +46,7 @@ export class BoardController {
   @ApiOperation({ summary: '게시물 type별 조회' })
   @ApiResponse({
     status: 200,
+    type: [Board],
   })
   findByType(@Query() findByTypeDto: FindByTypeDto): Promise<Board[]> {
     return this.boardService.findByType(findByTypeDto);
@@ -64,6 +67,7 @@ export class BoardController {
   @ApiResponse({
     status: 200,
   })
+  @ApiBody({ type: CreateBoardDto })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   update(

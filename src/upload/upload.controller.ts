@@ -10,6 +10,8 @@ import { UploadService } from './upload.service';
 import { ImageResponseDto } from './dto/response/image-response-dto';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -28,6 +30,7 @@ export class UploadController {
     status: 200,
     type: ImageResponseDto,
   })
+  @ApiConsumes('multipart/form-data')
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   async uploadImage(
