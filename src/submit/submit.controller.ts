@@ -5,6 +5,7 @@ import {
   Body,
   Param,
   Delete,
+  Query,
   HttpCode,
   UseGuards,
 } from '@nestjs/common';
@@ -20,6 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { ListResponse } from 'src/global/response/list-response.dto';
 
 @Controller('submit')
 @ApiTags('신청')
@@ -30,11 +32,25 @@ export class SubmitController {
   @ApiOperation({ summary: '모든 신청 조회' })
   @ApiResponse({
     status: 200,
+    type: ListResponse<Submit>,
   })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
-  findAll(): Promise<Submit[]> {
-    return this.submitService.findAll();
+  async findAll(): Promise<ListResponse<Submit>> {
+    return await this.submitService.findAll();
+  }
+
+  @Get('calendar')
+  @ApiOperation({ summary: '신청 캘린더 조회' })
+  @ApiResponse({
+    status: 200,
+    type: ListResponse<Submit>,
+  })
+  async findCalendar(
+    @Query('year') year: number,
+    @Query('month') month: number,
+  ): Promise<ListResponse<Submit>> {
+    return this.submitService.findCalendar(month, year);
   }
 
   @Get(':id')

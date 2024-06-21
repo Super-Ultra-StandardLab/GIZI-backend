@@ -2,10 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubmitDto } from './dto/request/create-submit.dto';
 import { Submit } from './entities/submit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Between, DeleteResult, Repository } from 'typeorm';
 import { ResponseSubmitDto } from './dto/response/submit-response-dto';
 import { ResponseAllSubmitDto } from './dto/response/all-submit-response-dto';
 import { validateDate } from './function/validateDate';
+import { ListResponse } from 'src/global/response/list-response.dto';
 
 @Injectable()
 export class SubmitService {
@@ -24,7 +25,7 @@ export class SubmitService {
     return await this.SubmitRepository.save(createSubmitDto);
   }
 
-  async findAll(): Promise<Submit[]> {
+  async findAll(): Promise<ListResponse<Submit>> {
     const result = ResponseAllSubmitDto.listOf(
       // TODO: 디자인 보고 전체 신청에서는 뭐만 select해서 띄울지 설정하기
       await this.SubmitRepository.find({
@@ -34,7 +35,25 @@ export class SubmitService {
       }),
     );
     if (result.length == 0) throw new NotFoundException();
-    return result;
+    return ListResponse.of(result);
+  }
+
+  async findCalendar(
+    month: number,
+    year: number,
+  ): Promise<ListResponse<Submit>> {
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+    const endDate = `${year}-${String(month).padStart(2, '0')}-${new Date(year, month, 0).getDate()}`;
+
+    const result = ResponseAllSubmitDto.listOf(
+      await this.SubmitRepository.find({
+        where: {
+          date: Between(startDate, endDate),
+        },
+      }),
+    );
+
+    return ListResponse.of(result);
   }
 
   async findOne(programId: number): Promise<ResponseSubmitDto> {
